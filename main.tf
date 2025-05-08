@@ -99,10 +99,33 @@ resource "aws_security_group" "videogames_security_group" {
     }
 }
 
-output "videogames-vpc-id" {
-    value = aws_vpc.videogames_vpc.id
+data "aws_ami" "amazon_linux" {
+    most_recent = true
+    owners = ["amazon"]
+
+    filter {
+        name   = "name"
+        values = ["al2023-ami-2023.7.20250414.0-kernel-*-x86_64"]
+    }
 }
 
-output "videogames-subnet-1-id" {
-    value = aws_subnet.videogames_subnet_1.id
+output "aws_ami_id" {
+    value = data.aws_ami.amazon_linux.id
+}
+
+resource "aws_instance" "videogames_instance" {
+    instance_type = "t2.micro"
+    ami = data.aws_ami.amazon_linux.id
+    subnet_id = aws_subnet.videogames_subnet_1.id
+    vpc_security_group_ids = [aws_security_group.videogames_security_group.id]
+
+    associate_public_ip_address = true
+
+    #This references the name of a key pair generated from the Key pair module in AWS and downloaded.
+    # Once associated key pair with this instance, you can ssh with the command ssh -i ~/.ssh/videogames.pem ec2-user@<public-ip-address>
+    key_name = "videogames"
+
+    tags = {
+        Name = "${var.env_prefix}-videogames-instance"
+    }
 }
