@@ -27,6 +27,11 @@ variable "avail_zone" {
     type        = string
 }
 
+variable "ssh_public_key_location" {
+    description = "This is the path of your generated public key, so you can provide aws for ssh key pair creation"
+    type = string 
+}
+
 resource "aws_vpc" "videogames_vpc" {
     cidr_block = var.vpc_cidr_block
     tags = {
@@ -113,6 +118,12 @@ output "aws_ami_id" {
     value = data.aws_ami.amazon_linux.id
 }
 
+resource "aws_key_pair" "videogames_instance_key_pair" {
+
+    key_name = "videogames-server-key"
+    public_key = file(var.ssh_public_key_location)
+}
+
 resource "aws_instance" "videogames_instance" {
     instance_type = "t2.micro"
     ami = data.aws_ami.amazon_linux.id
@@ -121,9 +132,9 @@ resource "aws_instance" "videogames_instance" {
 
     associate_public_ip_address = true
 
-    #This references the name of a key pair generated from the Key pair module in AWS and downloaded.
-    # Once associated key pair with this instance, you can ssh with the command ssh -i ~/.ssh/videogames.pem ec2-user@<public-ip-address>
-    key_name = "videogames"
+    #This references the name of a key pair coded above
+    # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/videogames_instance ec2-user@<public-ip-address>
+    key_name = aws_key_pair.videogames_instance_key_pair.key_name
 
     tags = {
         Name = "${var.env_prefix}-videogames-instance"
