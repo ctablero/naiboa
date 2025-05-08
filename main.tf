@@ -114,10 +114,6 @@ data "aws_ami" "amazon_linux" {
     }
 }
 
-output "aws_ami_id" {
-    value = data.aws_ami.amazon_linux.id
-}
-
 resource "aws_key_pair" "videogames_instance_key_pair" {
 
     key_name = "videogames-server-key"
@@ -139,4 +135,12 @@ resource "aws_instance" "videogames_instance" {
     tags = {
         Name = "${var.env_prefix}-videogames-instance"
     }
+}
+
+output "aws_ami_id" {
+    value = data.aws_ami.amazon_linux.id
+}
+
+output "assigned_public_ip" {
+    value = aws_instance.videogames_instance.public_ip
 }
