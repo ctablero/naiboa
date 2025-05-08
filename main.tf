@@ -132,6 +132,10 @@ resource "aws_instance" "videogames_instance" {
     # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/videogames_instance ec2-user@<public-ip-address>
     key_name = aws_key_pair.videogames_instance_key_pair.key_name
 
+    # Execute the script to install everything required for the videogames server
+    user_data = file("entry-script.sh")
+    user_data_replace_on_change = true
+
     tags = {
         Name = "${var.env_prefix}-videogames-instance"
     }
