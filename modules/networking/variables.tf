@@ -13,7 +13,7 @@ variable "env_prefix" {
     type        = string
 }
 
-variable "vpc_id" {
-    description = "VPC ID where the subnet and other resources will be created"
+variable "vpc_cidr_block" {
+    description = "CIDR block for the development vpc"
     type        = string
 }
