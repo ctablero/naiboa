@@ -20,6 +20,9 @@ module "videogames_networking" {
 module "videogames_webserver" {
     source = "./modules/webserver"
 
+    for_each                = toset(var.webserver_pool)
+    instance_name           = each.value
+
     env_prefix              = var.env_prefix
     ingress_cidr_blocks     = var.ingress_cidr_blocks
     instance_type           = var.instance_type

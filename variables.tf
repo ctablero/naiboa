@@ -32,3 +32,8 @@ variable "vpc_cidr_block" {
     description = "CIDR block for the VPC"
     type        = string
 }
+
+variable "webserver_pool" {
+    description = "List of backend servers"
+    type        = list(string)
+}

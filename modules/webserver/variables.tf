@@ -27,3 +27,8 @@ variable "subnet_1_id" {
     description = "Subnet ID where the EC2 instance will be launched"
     type        = string
 }
+
+variable "instance_name" {
+    description = "Name of the EC2 instance"
+    type        = string
+}

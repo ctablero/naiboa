@@ -63,6 +63,6 @@ resource "aws_instance" "videogames_instance" {
     user_data_replace_on_change = true
 
     tags = {
-        Name = "${var.env_prefix}-videogames-instance"
+        Name = "${var.env_prefix}-videogames-instance-${var.instance_name}"
     }
 }
