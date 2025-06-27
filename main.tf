@@ -17,6 +17,15 @@ module "videogames_networking" {
     vpc_cidr_block    = var.vpc_cidr_block
 }
 
+module "videogames_security" {
+    source = "./modules/security"
+
+    env_prefix              = var.env_prefix
+    ingress_cidr_blocks     = var.ingress_cidr_blocks
+    vpc_id                  = module.videogames_networking.vpc.id
+    ssh_public_key_location = var.ssh_public_key_location
+}
+
 module "videogames_webserver" {
     source = "./modules/webserver"
 
@@ -24,9 +33,8 @@ module "videogames_webserver" {
     instance_name           = each.value
 
     env_prefix              = var.env_prefix
-    ingress_cidr_blocks     = var.ingress_cidr_blocks
     instance_type           = var.instance_type
-    ssh_public_key_location = var.ssh_public_key_location
     subnet_1_id             = module.videogames_networking.subnet_1.id
-    vpc_id                  = module.videogames_networking.vpc.id
+    security_group_ids      = module.videogames_security.videogames_security_group_ids
+    instance_key_pair_name  = module.videogames_security.videogames_instance_key_pair_name
 }
