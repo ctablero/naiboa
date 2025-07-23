@@ -29,6 +29,30 @@ resource "aws_security_group" "videogames_security_group" {
     }
 }
 
+resource "aws_security_group" "alb_security_group" {
+    
+    name = "${var.env_prefix}-alb-security-group"
+    vpc_id = var.vpc_id
+
+    ingress {
+        from_port   = 80
+        to_port     = 80
+        protocol    = "TCP"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    egress {
+        from_port = 8080
+        to_port   = 8080
+        protocol  = "TCP"
+        security_groups = [aws_security_group.videogames_security_group.id]
+    }
+
+    tags = {
+        Name = "${var.env_prefix}-alb-security-group"
+    }
+}
+
 resource "aws_key_pair" "videogames_instance_key_pair" {
 
     key_name = "videogames-server-key"

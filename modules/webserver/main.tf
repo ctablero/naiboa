@@ -4,7 +4,7 @@ data "aws_ami" "amazon_linux" {
 
     filter {
         name   = "name"
-        values = ["al2023-ami-2023.7.20250414.0-kernel-*-x86_64"]
+        values = ["al2023-ami-2023.8.20250715.0-kernel-*-x86_64"]
     }
 }
 
@@ -15,7 +15,7 @@ resource "aws_instance" "videogames_instance" {
     vpc_security_group_ids = var.security_group_ids
 
     #Temporary disabled to not affect the free tier
-    associate_public_ip_address = false
+    associate_public_ip_address = true
 
     #This references the name of a key pair coded above
     # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/videogames_instance ec2-user@<public-ip-address>
