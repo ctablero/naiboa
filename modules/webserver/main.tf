@@ -4,7 +4,7 @@ data "aws_ami" "amazon_linux" {
 
     filter {
         name   = "name"
-        values = ["al2023-ami-2023.7.20250414.0-kernel-*-x86_64"]
+        values = ["al2023-ami-2023.8.20250715.0-kernel-*-x86_64"]
     }
 }
 

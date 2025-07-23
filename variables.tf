@@ -1,5 +1,10 @@
-variable "avail_zone" {
-    description = "Availability zone for the development subnet"
+variable "avail_zone_a" {
+    description = "Availability zone A for the development subnet"
+    type        = string
+}
+
+variable "avail_zone_b" {
+    description = "Availability zone B for the development subnet"
     type        = string
 }
 
@@ -23,7 +28,12 @@ variable "ssh_public_key_location" {
     type        = string 
 }
 
-variable "subnet_cidr_block" {
+variable "subnet_cidr_block_1" {
+    description = ""
+    type        = string
+}
+
+variable "subnet_cidr_block_2" {
     description = ""
     type        = string
 }

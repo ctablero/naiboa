@@ -11,10 +11,12 @@ moved {
 module "videogames_networking" {
     source = "./modules/networking"
 
-    subnet_cidr_block = var.subnet_cidr_block
-    avail_zone        = var.avail_zone
-    env_prefix        = var.env_prefix
-    vpc_cidr_block    = var.vpc_cidr_block
+    subnet_cidr_block_1 = var.subnet_cidr_block_1
+    subnet_cidr_block_2 = var.subnet_cidr_block_2
+    avail_zone_a        = var.avail_zone_a
+    avail_zone_b        = var.avail_zone_b
+    env_prefix          = var.env_prefix
+    vpc_cidr_block      = var.vpc_cidr_block
 }
 
 module "videogames_security" {
@@ -24,6 +26,17 @@ module "videogames_security" {
     ingress_cidr_blocks     = var.ingress_cidr_blocks
     vpc_id                  = module.videogames_networking.vpc.id
     ssh_public_key_location = var.ssh_public_key_location
+}
+
+module "videogames_alb" {
+    source = "./modules/alb"
+
+    alb_security_group_ids = module.videogames_security.alb_security_group_ids
+    env_prefix             = var.env_prefix
+    subnet_1_id            = module.videogames_networking.subnet_1.id
+    subnet_2_id            = module.videogames_networking.subnet_2.id
+    vpc_id                 = module.videogames_networking.vpc.id
+    target_ids             = { for key, value in module.videogames_webserver : key => value.instance.id}
 }
 
 module "videogames_webserver" {
