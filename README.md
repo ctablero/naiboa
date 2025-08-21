@@ -1,14 +1,20 @@
 # Aguamiel
 
-This project is intended to practice provisioning AWS resources via Terraform.
+A terraform module that provide a stack of AWS resources to streamline the creation of high availability environments for http backend services using ALB and autoscaling.
 
-**Happy coding!**
+## The problem
 
----
+The setup of an aws environment for a http backend service require the creation, connection and configuration of many aws resources.
 
-## 🚀 Getting Started
+## The solution
 
-### Prepare Variables
+A terraform module that setup needed resources to host backend services.
+
+It implements best practices of security, high availability and monitoring so you focus on the configuration management and creation of pipelines for the service.
+
+## 🚀 Setup instructions
+
+### Parameters
 
 Create a `terraform.tfvars` file with the following content, updating the values to suit your environment:
 
@@ -22,13 +28,13 @@ vpc_cidr_block          = "cidr-block-for-your-vpc"
 ssh_public_key_location = "path-to-your-public-key"
 ```
 
-### Install providers and modules
+Install providers and modules:
 
 ```hcl
 terraform init
 ```
 
-## Plan and Apply
+Then plan and apply:
 
 ```hcl
 terraform plan
