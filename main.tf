@@ -33,21 +33,19 @@ module "videogames_alb" {
 
     alb_security_group_ids = module.videogames_security.alb_security_group_ids
     env_prefix             = var.env_prefix
-    subnet_1_id            = module.videogames_networking.subnet_1.id
-    subnet_2_id            = module.videogames_networking.subnet_2.id
+    subnet_1_id            = module.videogames_networking.subnet_1.id # Required? Or subnets_ids?
+    subnet_2_id            = module.videogames_networking.subnet_2.id # Required? Or subnets_ids?
     vpc_id                 = module.videogames_networking.vpc.id
-    target_ids             = { for key, value in module.videogames_webserver : key => value.instance.id}
+    autoscaling_group_arn   = module.workload.autoscaling_group_arn
 }
 
-module "videogames_webserver" {
-    source = "./modules/webserver"
+module "workload" {
+    source = "./modules/workload"
 
-    for_each                = toset(var.webserver_pool)
-    instance_name           = each.value
-
+    ami_id                  = var.ami_id
     env_prefix              = var.env_prefix
     instance_type           = var.instance_type
-    subnet_1_id             = module.videogames_networking.subnet_1.id
+    subnets_ids             = module.videogames_networking.workloads_subnets_ids
     security_group_ids      = module.videogames_security.videogames_security_group_ids
     instance_key_pair_name  = module.videogames_security.videogames_instance_key_pair_name
 }

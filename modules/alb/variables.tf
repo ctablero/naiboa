@@ -27,3 +27,13 @@ variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string
 }
+
+variable "subnets_ids" {
+    description = "List of subnet IDs for the workload instances"
+    type        = list(string)
+}
+
+variable "autoscaling_group_arn" {
+    description = "ARN of the Auto Scaling group to register with the ALB"
+    type        = string
+}

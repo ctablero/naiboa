@@ -37,10 +37,8 @@ resource aws_alb_target_group "videogames_alb_target_group" {
     }
 }
 
-resource aws_alb_target_group_attachment "videogames_alb_target_group_attachments" {
-    for_each = var.target_ids
+resource aws_autoscaling_attachment "workload_autoscaling_attachment" {
 
-    port             = 8080
     target_group_arn = aws_alb_target_group.videogames_alb_target_group.arn
-    target_id        = each.value
+    autoscaling_group_arn        = var.autoscaling_group_arn
 }
