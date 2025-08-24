@@ -2,28 +2,24 @@ resource aws_autoscaling_group "workload_autoscaling_group" {
     min_size            = 1 # To parameterize
     max_size            = 3
     desired_capacity    = 1
-    launch_configuration = aws_launch_configuration.workload_launch_configuration.name
+
+    launch_template {
+        id      = aws_launch_template.workload_launch_template.id
+        version = "$Latest"
+    }
+
     vpc_zone_identifier = var.subnets_ids
 }
 
-resource aws_launch_configuration "workload_launch_configuration" {
+resource aws_launch_template "workload_launch_template" {
     name_prefix = "workload-"
     image_id = var.ami_id
     instance_type = var.instance_type
-    security_groups = var.security_group_ids
-
-    lifecycle {
-        create_before_destroy = true
-    }
-
-    #Temporary disabled to not affect the free tier
-    associate_public_ip_address = false
+    vpc_security_group_ids = var.security_group_ids
 
     #This references the name of a key pair coded above
     # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/identity-file ec2-user@<public-ip-address>
     key_name = var.instance_key_pair_name
 
-    # Execute the script to install everything required for the workloads
-    #user_data = file("./modules/workload/entry-script.sh")
-    #user_data_replace_on_change = true
+    user_data = filebase64("${path.module}/entry-script.sh")
 }
