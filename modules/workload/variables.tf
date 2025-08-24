@@ -1,5 +1,5 @@
 variable "ami_id" {
-    description = "AMI ID for the workload instances"
+    description = "AMI ID for the backend workloads"
     type        = string
 }
 
@@ -14,9 +14,9 @@ variable "env_prefix" {
     type        = string
 }
 
-variable "ingress_cidr_blocks" {
-    description = "CIDR blocks for ingress rules"
-    type        = list(string)
+variable "instance_key_pair_name" {
+    description = "Name of the key pair to associate with the EC2 instance"
+    type        = string
 }
 
 variable "instance_type" {
@@ -36,20 +36,12 @@ variable "max_size" {
     default     = 3
 }
 
-variable "ssh_public_key_location" {
-    description = "This is the path of your generated public key, so you can provide aws for ssh key pair creation"
-    type        = string 
+variable "security_group_ids" {
+    description = "Security group IDs to associate with the workloads"
+    type        = list(string)
 }
 
-variable "subnets_specs" {
-    description = "Specifications for the subnets to be created"
-    type = map(object({
-        avail_zone = string
-        cidr_block = string
-    }))
-}
-
-variable "vpc_id" {
-    description = "VPC ID where resources will be created"
-    type        = string
+variable "subnets_ids" {
+    description = "List of subnet IDs for the backend instances"
+    type        = list(string)
 }

@@ -1,54 +1,36 @@
-resource "aws_vpc" "videogames_vpc" {
-    cidr_block = var.vpc_cidr_block
-    tags = {
-        Name = "${var.env_prefix}-videogames-vpc"
-    }
-}
-
-resource "aws_internet_gateway" "videogames_internet_gateway" {
-    vpc_id = aws_vpc.videogames_vpc.id
+resource "aws_internet_gateway" "stack_internet_gateway" {
+    vpc_id = var.vpc_id
 
     tags   = {
-        Name = "${var.env_prefix}-videogames-internet-gateway"
+        Name = "${var.env_prefix}-stack-internet-gateway"
     }
 }
 
-resource "aws_subnet" "videogames_subnet_1" {
-    vpc_id            = aws_vpc.videogames_vpc.id
-    cidr_block        = var.subnet_cidr_block_1
-    availability_zone = var.avail_zone_a
+resource "aws_subnet" "stack_subnet_for_workloads" {
+    for_each = var.subnets_specs
+
+    vpc_id            = var.vpc_id
+    availability_zone = each.value.avail_zone    
+    cidr_block        = each.value.cidr_block
     tags              = {
-        Name = "${var.env_prefix}-videogames-subnet-1"
+        Name = "${var.env_prefix}-stack-subnet-${each.value.avail_zone}"
     }
 }
 
-resource "aws_subnet" "videogames_subnet_2" {
-    vpc_id            = aws_vpc.videogames_vpc.id
-    cidr_block        = var.subnet_cidr_block_2
-    availability_zone = var.avail_zone_b
-    tags              = {
-        Name = "${var.env_prefix}-videogames-subnet-2"
-    }
-}
-
-resource "aws_route_table" "videogames_route_table" {
-    vpc_id = aws_vpc.videogames_vpc.id
+resource "aws_route_table" "stack_route_table" {
+    vpc_id = var.vpc_id
     route {
         cidr_block = "0.0.0.0/0"
-        gateway_id = aws_internet_gateway.videogames_internet_gateway.id
+        gateway_id = aws_internet_gateway.stack_internet_gateway.id
     }
 
     tags  = {
-        Name = "${var.env_prefix}-videogames-route-table"
+        Name = "${var.env_prefix}-stack-route-table"
     }
 }
 
-resource "aws_route_table_association" "videogames_route_table_association_subnet_1" {
-    subnet_id      = aws_subnet.videogames_subnet_1.id
-    route_table_id = aws_route_table.videogames_route_table.id
-}
-
-resource "aws_route_table_association" "videogames_route_table_association_subnet_2" {
-    subnet_id = aws_subnet.videogames_subnet_2.id
-    route_table_id = aws_route_table.videogames_route_table.id
+resource "aws_route_table_association" "route_table_association_subnets_for_workloads" {
+    for_each = aws_subnet.stack_subnet_for_workloads
+    subnet_id      = each.value.id
+    route_table_id = aws_route_table.stack_route_table.id
 }

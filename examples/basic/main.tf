@@ -1,12 +1,16 @@
+provider "aws" {
+    region = "us-east-1"
+}
+
 variable "ami_id" {
     description = "AMI ID for the workload instances"
     type        = string
+    default     = "ami-0cbbe2c6a1bb2ad63" # Example AMI ID, replace with your own
 }
 
 variable "desired_capacity" {
     description = "Desired capacity of the Auto Scaling group"
     type        = number
-    default     = 1
 }
 
 variable "env_prefix" {
@@ -27,18 +31,21 @@ variable "instance_type" {
 variable "min_size" {
     description = "Minimum size of the Auto Scaling group"
     type        = number
-    default     = 1
 }
 
 variable "max_size" {
     description = "Maximum size of the Auto Scaling group"
     type        = number
-    default     = 3
 }
 
 variable "ssh_public_key_location" {
     description = "This is the path of your generated public key, so you can provide aws for ssh key pair creation"
     type        = string 
+}
+
+variable "vpc_cidr_block" {
+    description = "CIDR block for the VPC"
+    type        = string
 }
 
 variable "subnets_specs" {
@@ -49,7 +56,25 @@ variable "subnets_specs" {
     }))
 }
 
-variable "vpc_id" {
-    description = "VPC ID where resources will be created"
-    type        = string
+resource "aws_vpc" "stack_vpc" {
+    cidr_block = var.vpc_cidr_block
+    tags = {
+        Name = "stack-vpc"
+    }
+}
+
+module "alb_with_autoscaling" {
+    source = "../.."
+
+    env_prefix              = "dev"
+    desired_capacity        = var.desired_capacity
+    vpc_id                  = aws_vpc.stack_vpc.id
+    ami_id                  = var.ami_id
+    ingress_cidr_blocks     = var.ingress_cidr_blocks
+    instance_type           = "t2.micro"
+    min_size                = var.min_size
+    max_size                = var.max_size
+    subnets_specs           = var.subnets_specs
+    ssh_public_key_location = var.ssh_public_key_location
+
 }

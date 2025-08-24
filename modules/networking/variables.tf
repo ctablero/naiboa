@@ -1,29 +1,17 @@
-variable "subnet_cidr_block_1" {
-    description = "CIDR block for the development subnet 1"
-    type        = string
-}
-
-variable "subnet_cidr_block_2" {
-    description = "CIDR block for the development subnet 2"
-    type        = string
-}
-
-variable "avail_zone_a" {
-    description = "Availability zone A for the development subnet 1"
-    type        = string
-}
-
-variable "avail_zone_b" {
-    description = "Availability zone B for the development subnet 2"
-    type        = string
-}
-
 variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string
 }
 
-variable "vpc_cidr_block" {
-    description = "CIDR block for the development vpc"
+variable "subnets_specs" {
+    description = "Specifications for the subnets to be created"
+    type        = map(object({
+        avail_zone = string
+        cidr_block = string
+    }))
+}
+
+variable "vpc_id" {
+    description = "ID of the VPC to create resources in"
     type        = string
 }

@@ -1,5 +1,5 @@
-resource "aws_security_group" "videogames_security_group" {
-    name = "${var.env_prefix}-videogames-security-group"
+resource "aws_security_group" "workload_security_group" {
+    name = "${var.env_prefix}-workload-security-group"
     vpc_id = var.vpc_id
 
     ingress {
@@ -25,7 +25,7 @@ resource "aws_security_group" "videogames_security_group" {
     }
 
     tags = {
-        Name = "${var.env_prefix}-videogames-security-group"
+        Name = "${var.env_prefix}-workload-security-group"
     }
 }
 
@@ -54,11 +54,11 @@ resource "aws_security_group_rule" "alb_security_group_rule_http_outbound_webser
     to_port = 8080
     protocol = "TCP"
     security_group_id = aws_security_group.alb_security_group.id
-    source_security_group_id = aws_security_group.videogames_security_group.id
+    source_security_group_id = aws_security_group.workload_security_group.id
 }
 
-resource "aws_key_pair" "videogames_instance_key_pair" {
+resource "aws_key_pair" "workload_instance_key_pair" {
 
-    key_name = "videogames-server-key"
+    key_name = "workload-server-key"
     public_key = file(var.ssh_public_key_location)
 }
