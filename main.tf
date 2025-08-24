@@ -29,9 +29,12 @@ module "workload" {
     source = "./modules/workload"
 
     ami_id                  = var.ami_id
+    desired_capacity        = var.desired_capacity
     env_prefix              = var.env_prefix
     instance_type           = var.instance_type
-    subnets_ids             = module.networking.subnets_ids
-    security_group_ids      = module.security.workload_security_group_ids
     instance_key_pair_name  = module.security.workload_instance_key_pair_name
+    max_size                = var.max_size
+    min_size                = var.min_size
+    security_group_ids      = module.security.workload_security_group_ids
+    subnets_ids             = module.networking.subnets_ids
 }

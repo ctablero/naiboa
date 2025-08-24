@@ -3,6 +3,12 @@ variable "ami_id" {
     type        = string
 }
 
+variable "desired_capacity" {
+    description = "Desired capacity of the Auto Scaling group"
+    type        = number
+    default     = 1
+}
+
 variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string
@@ -16,6 +22,18 @@ variable "instance_key_pair_name" {
 variable "instance_type" {
     description = "Instance type for the EC2 instance"
     type        = string
+}
+
+variable "min_size" {
+    description = "Minimum size of the Auto Scaling group"
+    type        = number
+    default     = 1
+}
+
+variable "max_size" {
+    description = "Maximum size of the Auto Scaling group"
+    type        = number
+    default     = 3
 }
 
 variable "security_group_ids" {
