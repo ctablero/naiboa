@@ -3,8 +3,8 @@ variable "alb_security_group_ids" {
     type        = list(string)
 }
 
-variable "autoscaling_group_arn" {
-    description = "ARN of the Auto Scaling group to register with the ALB"
+variable "autoscaling_group_id" {
+    description = "ID of the Auto Scaling group to register with the ALB target group"
     type        = string
 }
 

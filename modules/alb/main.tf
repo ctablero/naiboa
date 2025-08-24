@@ -39,6 +39,6 @@ resource aws_alb_target_group "stack_alb_target_group" {
 
 resource aws_autoscaling_attachment "stack_autoscaling_attachment" {
 
-    target_group_arn = aws_alb_target_group.stack_alb_target_group.arn
-    autoscaling_group_arn        = var.autoscaling_group_arn
+    autoscaling_group_name = var.autoscaling_group_id
+    lb_target_group_arn = aws_alb_target_group.stack_alb_target_group.arn
 }

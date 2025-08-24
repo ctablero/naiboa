@@ -19,7 +19,7 @@ module "alb" {
     source = "./modules/alb"
 
     alb_security_group_ids  = module.security.alb_security_group_ids
-    autoscaling_group_arn   = module.workload.autoscaling_group_arn
+    autoscaling_group_id    = module.workload.autoscaling_group_id
     env_prefix              = var.env_prefix
     subnets_ids             = module.networking.subnets_ids
     vpc_id                  = var.vpc_id
@@ -33,5 +33,5 @@ module "workload" {
     instance_type           = var.instance_type
     subnets_ids             = module.networking.subnets_ids
     security_group_ids      = module.security.workload_security_group_ids
-    instance_key_pair_name  = module.workload_security.workload_instance_key_pair_name
+    instance_key_pair_name  = module.security.workload_instance_key_pair_name
 }

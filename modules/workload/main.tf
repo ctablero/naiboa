@@ -2,11 +2,8 @@ resource aws_autoscaling_group "workload_autoscaling_group" {
     min_size            = 1 # To parameterize
     max_size            = 3
     desired_capacity    = 1
+    launch_configuration = aws_launch_configuration.workload_launch_configuration.name
     vpc_zone_identifier = var.subnets_ids
-
-    tags = {
-        Name = "${var.env_prefix}-workload"
-    }
 }
 
 resource aws_launch_configuration "workload_launch_configuration" {
@@ -27,6 +24,6 @@ resource aws_launch_configuration "workload_launch_configuration" {
     key_name = var.instance_key_pair_name
 
     # Execute the script to install everything required for the workloads
-    user_data = file("./modules/workload/entry-script.sh")
-    user_data_replace_on_change = true
+    #user_data = file("./modules/workload/entry-script.sh")
+    #user_data_replace_on_change = true
 }
