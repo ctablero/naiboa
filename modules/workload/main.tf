@@ -20,6 +20,4 @@ resource aws_launch_template "workload_launch_template" {
     #This references the name of a key pair coded above
     # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/identity-file ec2-user@<public-ip-address>
     key_name  = var.instance_key_pair_name
-
-    user_data = filebase64("${path.module}/entry-script.sh")
 }
