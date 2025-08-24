@@ -23,10 +23,10 @@ resource aws_launch_configuration "workload_launch_configuration" {
     associate_public_ip_address = false
 
     #This references the name of a key pair coded above
-    # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/videogames_instance ec2-user@<public-ip-address>
+    # Once associated key pair with this instance, you can ssh with the command (reference the private key) ssh -i ~/.ssh/identity-file ec2-user@<public-ip-address>
     key_name = var.instance_key_pair_name
 
-    # Execute the script to install everything required for the videogames server
+    # Execute the script to install everything required for the workloads
     user_data = file("./modules/workload/entry-script.sh")
     user_data_replace_on_change = true
 }
