@@ -12,6 +12,10 @@ A terraform module that setup needed resources to host backend services.
 
 It implements best practices of security, high availability and monitoring so you focus on the configuration management and creation of pipelines for the service.
 
+## Architecture diagram
+
+![Architecture Diagram](./diagrams/aguamiel-architecture.jpg)
+
 ## 🚀 Setup instructions
 
 ### Parameters
