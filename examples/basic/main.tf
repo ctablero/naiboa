@@ -8,9 +8,10 @@ variable "ami_id" {
     default     = "ami-0cbbe2c6a1bb2ad63" # Example AMI ID, replace with your own
 }
 
-variable "desired_capacity" {
-    description = "Desired capacity of the Auto Scaling group"
+variable "asg_policy_target_avg_cpu_utilization" {
+    description = "Target average CPU utilization percentage for the Auto Scaling group policy"
     type        = number
+    default     = 50
 }
 
 variable "env_prefix" {
@@ -67,7 +68,7 @@ module "alb_with_autoscaling" {
     source = "../.."
 
     env_prefix              = "dev"
-    desired_capacity        = var.desired_capacity
+    asg_policy_target_avg_cpu_utilization = var.asg_policy_target_avg_cpu_utilization
     vpc_id                  = aws_vpc.stack_vpc.id
     ami_id                  = var.ami_id
     ingress_cidr_blocks     = var.ingress_cidr_blocks
