@@ -1,18 +1,3 @@
-resource aws_autoscaling_policy "workload_autoscaling_group_avg_cpu_utilization" {
-    autoscaling_group_name = aws_autoscaling_group.workload_autoscaling_group.name
-    name                   = "${var.env_prefix}-avg-cpu-utilization"
-
-    policy_type = "TargetTrackingScaling"
-
-    target_tracking_configuration {
-        predefined_metric_specification {
-            predefined_metric_type = "ASGAverageCPUUtilization"
-        }
-        target_value = var.asg_policy_target_avg_cpu_utilization
-    }
-
-}
-
 resource aws_autoscaling_group "workload_autoscaling_group" {
     min_size            = var.min_size
     max_size            = var.max_size

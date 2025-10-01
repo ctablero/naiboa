@@ -3,12 +3,6 @@ variable "ami_id" {
     type        = string
 }
 
-variable "asg_policy_target_avg_cpu_utilization" {
-    description = "Target average CPU utilization percentage for the Auto Scaling group policy"
-    type        = number
-    default     = 50
-}
-
 variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string
