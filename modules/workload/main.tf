@@ -1,7 +1,6 @@
 resource aws_autoscaling_group "workload_autoscaling_group" {
     min_size            = var.min_size
     max_size            = var.max_size
-    desired_capacity    = var.desired_capacity
 
     launch_template {
         id      = aws_launch_template.workload_launch_template.id

@@ -3,12 +3,6 @@ variable "ami_id" {
     type        = string
 }
 
-variable "desired_capacity" {
-    description = "Desired capacity of the Auto Scaling group"
-    type        = number
-    default     = 1
-}
-
 variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string
@@ -34,6 +28,18 @@ variable "max_size" {
     description = "Maximum size of the Auto Scaling group"
     type        = number
     default     = 3
+}
+
+variable "quantity_avg_cpu_utilization" {
+    description = "Target average CPU utilization percentage for the Auto Scaling group policy"
+    type        = number
+    default     = 50
+}
+
+variable "quantity_request_count_per_target" {
+    description = "Target request count per target for the Auto Scaling group policy"
+    type        = number
+    default     = 10
 }
 
 variable "ssh_public_key_location" {

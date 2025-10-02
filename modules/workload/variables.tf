@@ -3,12 +3,6 @@ variable "ami_id" {
     type        = string
 }
 
-variable "desired_capacity" {
-    description = "Desired capacity of the Auto Scaling group"
-    type        = number
-    default     = 1
-}
-
 variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string

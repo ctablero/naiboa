@@ -8,11 +8,6 @@ variable "ami_id" {
     default     = "ami-0cbbe2c6a1bb2ad63" # Example AMI ID, replace with your own
 }
 
-variable "desired_capacity" {
-    description = "Desired capacity of the Auto Scaling group"
-    type        = number
-}
-
 variable "env_prefix" {
     description = "Environment prefix for resource naming"
     type        = string
@@ -36,6 +31,18 @@ variable "min_size" {
 variable "max_size" {
     description = "Maximum size of the Auto Scaling group"
     type        = number
+}
+
+variable "quantity_avg_cpu_utilization" {
+    description = "Target average CPU utilization percentage for the Auto Scaling group policy"
+    type        = number
+    default     = 50
+}
+
+variable "quantity_request_count_per_target" {
+    description = "Target request count per target for the Auto Scaling group policy"
+    type        = number
+    default     = 10
 }
 
 variable "ssh_public_key_location" {
@@ -66,15 +73,16 @@ resource "aws_vpc" "stack_vpc" {
 module "alb_with_autoscaling" {
     source = "../.."
 
-    env_prefix              = "dev"
-    desired_capacity        = var.desired_capacity
-    vpc_id                  = aws_vpc.stack_vpc.id
-    ami_id                  = var.ami_id
-    ingress_cidr_blocks     = var.ingress_cidr_blocks
-    instance_type           = "t2.micro"
-    min_size                = var.min_size
-    max_size                = var.max_size
-    subnets_specs           = var.subnets_specs
-    ssh_public_key_location = var.ssh_public_key_location
+    ami_id                                  = var.ami_id
+    env_prefix                              = "dev"
+    ingress_cidr_blocks                     = var.ingress_cidr_blocks
+    instance_type                           = "t2.micro"
+    min_size                                = var.min_size
+    max_size                                = var.max_size
+    quantity_avg_cpu_utilization            = var.quantity_avg_cpu_utilization
+    quantity_request_count_per_target       = var.quantity_request_count_per_target
+    subnets_specs                           = var.subnets_specs
+    ssh_public_key_location                 = var.ssh_public_key_location
+    vpc_id                                  = aws_vpc.stack_vpc.id    
 
 }

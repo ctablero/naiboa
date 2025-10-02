@@ -28,13 +28,21 @@ module "alb" {
 module "workload" {
     source = "./modules/workload"
 
-    ami_id                  = var.ami_id
-    desired_capacity        = var.desired_capacity
-    env_prefix              = var.env_prefix
-    instance_type           = var.instance_type
-    instance_key_pair_name  = module.security.workload_instance_key_pair_name
-    max_size                = var.max_size
-    min_size                = var.min_size
-    security_group_ids      = module.security.workload_security_group_ids
-    subnets_ids             = module.networking.subnets_ids
+    ami_id                                  = var.ami_id
+    env_prefix                              = var.env_prefix
+    instance_type                           = var.instance_type
+    instance_key_pair_name                  = module.security.workload_instance_key_pair_name
+    max_size                                = var.max_size
+    min_size                                = var.min_size
+    security_group_ids                      = module.security.workload_security_group_ids
+    subnets_ids                             = module.networking.subnets_ids
+}
+
+module "autoscaling_policies" {
+    source = "./modules/autoscaling_policies"
+
+    autoscaling_group_name            = module.workload.autoscaling_group_name
+    quantity_avg_cpu_utilization      = var.quantity_avg_cpu_utilization
+    quantity_request_count_per_target = var.quantity_request_count_per_target
+    resource_label                    = module.alb.resource_label
 }
