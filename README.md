@@ -57,9 +57,9 @@ module "alb_with_autoscaling" {
     source = "relative-path-to-the-root-of-repo"
 
     ami_id                                  = var.ami_id
-    env_prefix                              = "dev"
+    env_prefix                              = var.env_prefix
     ingress_cidr_blocks                     = var.ingress_cidr_blocks
-    instance_type                           = "t2.micro"
+    instance_type                           = var.instance_type
     min_size                                = var.min_size
     max_size                                = var.max_size
     quantity_avg_cpu_utilization            = var.quantity_avg_cpu_utilization
